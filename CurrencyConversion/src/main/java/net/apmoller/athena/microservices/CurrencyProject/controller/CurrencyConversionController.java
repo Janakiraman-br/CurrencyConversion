@@ -37,7 +37,7 @@ public class CurrencyConversionController
 
     //GET CURRENCY CONVERSION DATA BY ID
     @GetMapping("conversionkey/{key}")
-    public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key) throws KeyNotFoundException
+    public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key) throws CurrencyConversionException
     {
         return currencyConversionService.getCurrencyDataByCode(key);
     }
@@ -50,24 +50,24 @@ public class CurrencyConversionController
     }
     //GET DATA BY SPECIFIC DATA
    @GetMapping("name/{name}")
-   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name) throws NameNotFoundException
+   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name) throws CurrencyConversionException
    {
        return currencyConversionService.getCurrencyDataByName(name);
    }
 
     @GetMapping("factor/{conversionFactor}")
-    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor) throws FactorNotFoundException
+    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor) throws CurrencyConversionException
     {
         return currencyConversionService.getCurrencyDataByConversionFactor(conversionFactor);
     }
     @GetMapping("status/{status}")
-    public Flux<CurrencyConversionDto> getByStatus(@PathVariable boolean status) throws StatusNotFoundException
+    public Flux<CurrencyConversionDto> getByStatus(@PathVariable boolean status) throws CurrencyConversionException
     {
         return currencyConversionService.getCurrencyDataByStatus(status);
     }
 
     @GetMapping("createdby/{createdBy}")
-    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy) throws CreatedByNotFoundException
+    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy) throws CurrencyConversionException
     {
         return currencyConversionService.getCurrencyDataByCreatedBy(createdBy);
     }
