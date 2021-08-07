@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -76,7 +78,6 @@ public class CurrencyConversionService
 
     public Mono<Map<String, String>> getCodeAndFactor()
     {
-    boolean s;
     return currencyConversionRepository.findByStatusIgnoreCase(true).map(AppUtils::currencyConversionEntityToDto)
             .collect(Collectors.toMap(a -> a.getConversionKey(), a -> a.getConversionName()));
 
