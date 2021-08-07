@@ -2,13 +2,16 @@ package net.apmoller.athena.microservices.CurrencyProject.controller;
 
 
 import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionDto;
+import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionSavedSearchDto;
 import net.apmoller.athena.microservices.CurrencyProject.exception.*;
 import net.apmoller.athena.microservices.CurrencyProject.services.CurrencyConversionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -72,5 +75,23 @@ public class CurrencyConversionController
     public Mono<Map<String, String>> getCodeAndName()
     {
         return currencyConversionService.getCodeAndFactor();
+    }
+
+    @PostMapping("/savedsearch")
+    public ResponseEntity addSearchedCurrency(@RequestBody Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    {
+        return currencyConversionService.addSearchedCurrencyName(currencyConversionSavedSearchDtoMono);
+    }
+
+    @GetMapping("/savedsearch/conversionkey")
+    public Mono<List<String>> getAllConversionFactorSavedSearch(@PathVariable String conversionfactor)
+    {
+        return currencyConversionService.getAllConversionKeySavedSearch(conversionfactor);
+    }
+
+    @GetMapping("/savedsearch/{name}")
+    public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(@PathVariable String name)
+    {
+        return currencyConversionService.getCurrencyConversionByName(name);
     }
 }

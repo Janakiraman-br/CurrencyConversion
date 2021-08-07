@@ -1,15 +1,20 @@
 package net.apmoller.athena.microservices.CurrencyProject.services;
 
 import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionDto;
+import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionSavedSearchDto;
 import net.apmoller.athena.microservices.CurrencyProject.exception.*;
 import net.apmoller.athena.microservices.CurrencyProject.models.CurrencyConversion;
 import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionRepository;
+import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionSavedSearchRepository;
 import net.apmoller.athena.microservices.CurrencyProject.util.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,6 +23,7 @@ public class CurrencyConversionService
 {
     @Autowired
     private CurrencyConversionRepository currencyConversionRepository;
+    private CurrencyConversionSavedSearchRepository currencyConversionSavedSearchRepository;
     private CurrencyConversion currencyConversion;
 
     //GET ALL CURRENCY CONVERSION DATAS
@@ -56,6 +62,7 @@ public class CurrencyConversionService
 
         return commodity.map(AppUtils::currencyConversionDtoToEntity).flatMap(currencyConversionRepository::insert).map(AppUtils::currencyConversionEntityToDto);
     }
+
     public Flux<CurrencyConversionDto> getCurrencyDataByName(String conversion_name) throws NameNotFoundException
     {
         return currencyConversionRepository.findByConversionNameIgnoreCase(conversion_name).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new NameNotFoundException("Invalid ID Found"))));
@@ -77,10 +84,29 @@ public class CurrencyConversionService
 
     public Mono<Map<String, String>> getCodeAndFactor()
     {
-    boolean s;
-    return currencyConversionRepository.findByStatusIgnoreCase(true).map(AppUtils::currencyConversionEntityToDto)
-            .collect(Collectors.toMap(a -> a.getConversionKey(), a -> a.getConversionName()));
+        boolean s;
+        return currencyConversionRepository.findByStatusIgnoreCase(true).map(AppUtils::currencyConversionEntityToDto)
+                .collect(Collectors.toMap(a -> a.getConversionKey(), a -> a.getConversionName()));
 
+    }
+
+    public ResponseEntity addSearchedCurrencyName(Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    {
+        return new ResponseEntity(currencyConversionSavedSearchDtoMono.map(AppUtils::currencyConversionSavedSearchDtoToEntity).flatMap(currencyConversionSavedSearchRepository::insert), HttpStatus.ACCEPTED);
+    }
+
+    public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(String name)
+    {
+        return currencyConversionSavedSearchRepository.findById(name).map(AppUtils::currencyConversionSavedSearchEntityToDto);
+    }
+
+
+    public Mono<List<String>> getAllConversionKeySavedSearch(String conversionfactor)
+    {
+        return currencyConversionSavedSearchRepository.findAll()
+                .map(AppUtils::currencyConversionSavedSearchEntityToDto)
+                .map(e->e.getConversionKey())
+                .collect(Collectors.toList());
     }
 
 }
