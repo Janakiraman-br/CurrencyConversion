@@ -73,7 +73,7 @@ public class CurrencyConversionController
     }
 
     @GetMapping("getcodeandname")
-    public Mono<Map<String, Integer>> getCodeAndName()
+    public Mono<Map<String, Integer >> getCodeAndName()
     {
         return currencyConversionService.getCodeAndFactor();
     }
