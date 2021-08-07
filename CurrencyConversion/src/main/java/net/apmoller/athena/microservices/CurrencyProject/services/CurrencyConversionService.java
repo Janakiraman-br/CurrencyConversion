@@ -79,14 +79,14 @@ public class CurrencyConversionService
 
     public Flux<CurrencyConversionDto> getCurrencyDataByCreatedBy(String createdBy) throws CreatedByNotFoundException
     {
-        return currencyConversionRepository.findByCreatedByIgnoreCase(createdBy).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new CreatedByNotFoundException("Invalid ID Found"))));
+        return currencyConversionRepository.findByCreatedByIgnoreCase(createdBy).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new CreatedByNotFoundException("Invalid Name of the creator"))));
     }
 
-    public Mono<Map<String, String>> getCodeAndFactor()
+    public Mono<Map<String, Integer>> getCodeAndFactor()
     {
         boolean s;
         return currencyConversionRepository.findByStatusIgnoreCase(true).map(AppUtils::currencyConversionEntityToDto)
-                .collect(Collectors.toMap(a -> a.getConversionKey(), a -> a.getConversionName()));
+                .collect(Collectors.toMap(a -> a.getConversionName(), a -> a.getConversionFactor()));
 
     }
 

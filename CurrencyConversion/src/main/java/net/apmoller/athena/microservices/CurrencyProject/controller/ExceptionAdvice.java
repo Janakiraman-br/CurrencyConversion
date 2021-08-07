@@ -13,40 +13,40 @@ public class ExceptionAdvice
     @ExceptionHandler(CreatedByNotFoundException.class)
     public ResponseEntity<CurrencyConversionError> mapException(CreatedByNotFoundException ex)
     {
-        CurrencyConversionError details = new CurrencyConversionError("Invalid","Not found");
+        CurrencyConversionError details = new CurrencyConversionError("Invalid", ex.getMessage());
         return new ResponseEntity(details, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(CreatedByNotFoundException.class)
-    public ResponseEntity<CurrencyConversionError> mapException(FactorNotFoundException ex)
+    @ExceptionHandler(FactorNotFoundException.class)
+    public ResponseEntity<CurrencyConversionError> mapException1(FactorNotFoundException ex)
     {
         CurrencyConversionError details = new CurrencyConversionError("Invalid","Not found");
         return new ResponseEntity(details, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(CreatedByNotFoundException.class)
-    public ResponseEntity<CurrencyConversionError> mapException(KeyNotFoundException ex)
+    @ExceptionHandler(KeyNotFoundException.class)
+    public ResponseEntity<CurrencyConversionError> mapException2(KeyNotFoundException ex)
     {
         CurrencyConversionError details = new CurrencyConversionError("Invalid","Not found");
         return new ResponseEntity(details, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(CreatedByNotFoundException.class)
-    public ResponseEntity<CurrencyConversionError> mapException(NameNotFoundException ex)
+    @ExceptionHandler(NameNotFoundException.class)
+    public ResponseEntity<CurrencyConversionError> mapException3(NameNotFoundException ex)
     {
         CurrencyConversionError details = new CurrencyConversionError("Invalid","Not found");
         return new ResponseEntity(details, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(CreatedByNotFoundException.class)
-    public ResponseEntity<CurrencyConversionError> mapException(StatusNotFoundException ex)
+    @ExceptionHandler(StatusNotFoundException.class)
+    public ResponseEntity<CurrencyConversionError> mapException4(StatusNotFoundException ex)
     {
         CurrencyConversionError details = new CurrencyConversionError("Invalid","Not found");
         return new ResponseEntity(details, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CurrencyConversionError> mapExceptions(Exception e)
+    public ResponseEntity<CurrencyConversionError> mapExceptions5(Exception e)
     {
         CurrencyConversionError error = new CurrencyConversionError("Kindly check the Details and Enter them correctly", "Your Input is Invalid");
         return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
