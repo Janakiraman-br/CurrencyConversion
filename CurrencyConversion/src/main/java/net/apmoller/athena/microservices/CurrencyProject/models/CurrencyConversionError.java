@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class CurrencyConversionError
 {
-    private String Details;
     private String errorMessage;
+    private String Details;
 }
 

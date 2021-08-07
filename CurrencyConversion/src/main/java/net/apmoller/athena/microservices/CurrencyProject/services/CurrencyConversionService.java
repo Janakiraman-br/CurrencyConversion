@@ -45,13 +45,18 @@ public class CurrencyConversionService
     //GET CURRENCY CONVERSION DATA BY ID
     public Mono<CurrencyConversionDto> getCurrencyDataByCode(String key) throws CurrencyConversionException
     {
-        return currencyConversionRepository.findById(key).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new KeyNotFoundException("Invalid ID Found"))));
+        return currencyConversionRepository
+                .findById(key)
+                .map(AppUtils::currencyConversionEntityToDto)
+                .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Key Not Found"))));
     }
 
     //UPDATE CURRENCY CONVERSION DATA BY ID
     public Mono<CurrencyConversionDto> updateCurrencyData(Mono<CurrencyConversionDto> commodity, String key)
     {
-        Mono<CurrencyConversionDto> r = currencyConversionRepository.findById(key).map(AppUtils::currencyConversionEntityToDto);
+        Mono<CurrencyConversionDto> r = currencyConversionRepository
+                .findById(key)
+                .map(AppUtils::currencyConversionEntityToDto);
 
         currencyConversionRepository.findById(key)
                 .flatMap(p -> r.map(AppUtils::currencyConversionDtoToEntity)
@@ -60,26 +65,40 @@ public class CurrencyConversionService
                 .flatMap(currencyConversionRepository::save)
                 .map(AppUtils::currencyConversionEntityToDto).subscribe();
 
-        return commodity.map(AppUtils::currencyConversionDtoToEntity).flatMap(currencyConversionRepository::insert).map(AppUtils::currencyConversionEntityToDto);
+        return commodity.map(AppUtils::currencyConversionDtoToEntity)
+                .flatMap(currencyConversionRepository::insert)
+                .map(AppUtils::currencyConversionEntityToDto);
     }
 
     public Flux<CurrencyConversionDto> getCurrencyDataByName(String conversion_name) throws CurrencyConversionException
     {
-        return currencyConversionRepository.findByConversionNameIgnoreCase(conversion_name).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new NameNotFoundException("Invalid ID Found"))));
+        return currencyConversionRepository
+                .findByConversionNameIgnoreCase(conversion_name)
+                .map(AppUtils::currencyConversionEntityToDto)
+                .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Name Not Found"))));
     }
 
     public Flux<CurrencyConversionDto> getCurrencyDataByConversionFactor(int conversionFactor) throws CurrencyConversionException
     {
-        return currencyConversionRepository.findByConversionFactorIgnoreCase(conversionFactor).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new FactorNotFoundException("Invalid ID Found"))));
+        return currencyConversionRepository
+                .findByConversionFactorIgnoreCase(conversionFactor)
+                .map(AppUtils::currencyConversionEntityToDto)
+                .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Factor Not Found"))));
     }
     public Flux<CurrencyConversionDto> getCurrencyDataByStatus(boolean status) throws CurrencyConversionException
     {
-        return currencyConversionRepository.findByStatusIgnoreCase(status).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new StatusNotFoundException("Invalid ID Found"))));
+        return currencyConversionRepository
+                .findByStatusIgnoreCase(status)
+                .map(AppUtils::currencyConversionEntityToDto)
+                .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Invalid Status Input is Provided"))));
     }
 
     public Flux<CurrencyConversionDto> getCurrencyDataByCreatedBy(String createdBy) throws CurrencyConversionException
     {
-        return currencyConversionRepository.findByCreatedByIgnoreCase(createdBy).map(AppUtils::currencyConversionEntityToDto).switchIfEmpty(Mono.defer(()->Mono.error(new CreatedByNotFoundException("Invalid Name of the creator"))));
+        return currencyConversionRepository
+                .findByCreatedByIgnoreCase(createdBy)
+                .map(AppUtils::currencyConversionEntityToDto)
+                .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Creator Name Not Found"))));
     }
 
     public Mono<Map<String, Integer>> getCodeAndFactor()
@@ -97,7 +116,9 @@ public class CurrencyConversionService
 
     public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(String name)
     {
-        return currencyConversionSavedSearchRepository.findById(name).map(AppUtils::currencyConversionSavedSearchEntityToDto);
+        return currencyConversionSavedSearchRepository
+                .findById(name)
+                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
     }
 
 
