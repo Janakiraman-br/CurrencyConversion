@@ -20,7 +20,7 @@ public class CurrencyConversionDto
     private int conversionFactor;
     private boolean status;
     private String createdBy;
-    private Date createdDate;
+    private String createdDate;
 
 
 }
