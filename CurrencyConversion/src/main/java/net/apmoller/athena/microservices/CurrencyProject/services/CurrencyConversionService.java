@@ -88,7 +88,7 @@ public class CurrencyConversionService
     public Flux<CurrencyConversionDto> getCurrencyDataByStatus(boolean status) throws CurrencyConversionException
     {
         return currencyConversionRepository
-                .findByStatusIgnoreCase(status)
+                .findByStatus(status)
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Invalid Status Input is Provided"))));
     }
@@ -103,9 +103,11 @@ public class CurrencyConversionService
 
     public Mono<Map<String, Integer>> getCodeAndFactor()
     {
-        boolean s;
-        return currencyConversionRepository.findByStatusIgnoreCase(true).map(AppUtils::currencyConversionEntityToDto)
+        System.out.println("Incoming");
+        Mono<Map<String, Integer>> collect = currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
                 .collect(Collectors.toMap(a -> a.getConversionName(), a -> a.getConversionFactor()));
+        System.out.println(collect);
+        return collect;
 
     }
 
