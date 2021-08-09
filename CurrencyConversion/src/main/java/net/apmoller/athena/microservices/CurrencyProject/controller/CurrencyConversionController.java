@@ -38,7 +38,7 @@ public class CurrencyConversionController
 
     //GET CURRENCY CONVERSION DATA BY ID
     @GetMapping("conversionkey/{key}")
-    public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key) throws CurrencyConversionException
+    public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key)
     {
         return currencyConversionService.getCurrencyDataByCode(key);
     }
@@ -51,24 +51,24 @@ public class CurrencyConversionController
     }
     //GET DATA BY SPECIFIC DATA
    @GetMapping("name/{name}")
-   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name) throws CurrencyConversionException
+   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name)
    {
        return currencyConversionService.getCurrencyDataByName(name);
    }
 
     @GetMapping("factor/{conversionFactor}")
-    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor)
     {
         return currencyConversionService.getCurrencyDataByConversionFactor(conversionFactor);
     }
     @GetMapping("status/{status}")
-    public Flux<CurrencyConversionDto> getByStatus(@PathVariable boolean status) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getByStatus(@PathVariable boolean status)
     {
         return currencyConversionService.getCurrencyDataByStatus(status);
     }
 
     @GetMapping("createdby/{createdBy}")
-    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy)
     {
         return currencyConversionService.getCurrencyDataByCreatedBy(createdBy);
     }
@@ -80,7 +80,8 @@ public class CurrencyConversionController
     }
 
     @PostMapping("/savedsearch")
-    public ResponseEntity addSearchedCurrency(@RequestBody Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    public Mono<CurrencyConversionSavedSearchDto> addSearchedCurrency(@RequestBody Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+
     {
         return currencyConversionService.addSearchedCurrencyName(currencyConversionSavedSearchDtoMono);
     }
@@ -95,5 +96,11 @@ public class CurrencyConversionController
     public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(@PathVariable String name)
     {
         return currencyConversionService.getCurrencyConversionByName(name);
+    }
+
+    @GetMapping("/savedsearch")
+    public Flux<CurrencyConversionSavedSearchDto> getAllSavedSearchDatas()
+    {
+        return currencyConversionService.getAllSavedSearchDatas();
     }
 }

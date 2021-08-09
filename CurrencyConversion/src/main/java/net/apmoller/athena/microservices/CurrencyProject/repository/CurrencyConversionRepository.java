@@ -14,7 +14,6 @@ public interface CurrencyConversionRepository extends ReactiveMongoRepository<Cu
 
     Flux<CurrencyConversion> findByConversionNameIgnoreCase(String conversion_name);
     Flux<CurrencyConversion> findByConversionFactorIgnoreCase(int conversionFactor);
-//    Flux<CurrencyConversion> findByStatusIgnoreCase(boolean status);
     Flux<CurrencyConversion> findByStatus(boolean status);
     Flux<CurrencyConversion> findByCreatedByIgnoreCase(String createdBy);
 

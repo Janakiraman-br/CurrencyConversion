@@ -43,7 +43,7 @@ public class CurrencyConversionService
     }
 
     //GET CURRENCY CONVERSION DATA BY ID
-    public Mono<CurrencyConversionDto> getCurrencyDataByCode(String key) throws CurrencyConversionException
+    public Mono<CurrencyConversionDto> getCurrencyDataByCode(String key)
     {
         return currencyConversionRepository
                 .findById(key)
@@ -70,7 +70,7 @@ public class CurrencyConversionService
                 .map(AppUtils::currencyConversionEntityToDto);
     }
 
-    public Flux<CurrencyConversionDto> getCurrencyDataByName(String conversion_name) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getCurrencyDataByName(String conversion_name)
     {
         return currencyConversionRepository
                 .findByConversionNameIgnoreCase(conversion_name)
@@ -78,14 +78,14 @@ public class CurrencyConversionService
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Name Not Found"))));
     }
 
-    public Flux<CurrencyConversionDto> getCurrencyDataByConversionFactor(int conversionFactor) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getCurrencyDataByConversionFactor(int conversionFactor)
     {
         return currencyConversionRepository
                 .findByConversionFactorIgnoreCase(conversionFactor)
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Factor Not Found"))));
     }
-    public Flux<CurrencyConversionDto> getCurrencyDataByStatus(boolean status) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getCurrencyDataByStatus(boolean status)
     {
         return currencyConversionRepository
                 .findByStatus(status)
@@ -93,7 +93,7 @@ public class CurrencyConversionService
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Invalid Status Input is Provided"))));
     }
 
-    public Flux<CurrencyConversionDto> getCurrencyDataByCreatedBy(String createdBy) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getCurrencyDataByCreatedBy(String createdBy)
     {
         return currencyConversionRepository
                 .findByCreatedByIgnoreCase(createdBy)
@@ -111,9 +111,10 @@ public class CurrencyConversionService
 
     }
 
-    public ResponseEntity addSearchedCurrencyName(Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    public Mono<CurrencyConversionSavedSearchDto> addSearchedCurrencyName(Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
     {
-        return new ResponseEntity(currencyConversionSavedSearchDtoMono.map(AppUtils::currencyConversionSavedSearchDtoToEntity).flatMap(currencyConversionSavedSearchRepository::insert), HttpStatus.ACCEPTED);
+        return currencyConversionSavedSearchDtoMono.map(AppUtils::currencyConversionSavedSearchDtoToEntity).flatMap(currencyConversionSavedSearchRepository::insert)
+                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
     }
 
     public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(String name)
@@ -130,6 +131,11 @@ public class CurrencyConversionService
                 .map(AppUtils::currencyConversionSavedSearchEntityToDto)
                 .map(e->e.getConversionKey())
                 .collect(Collectors.toList());
+    }
+    public Flux<CurrencyConversionSavedSearchDto> getAllSavedSearchDatas()
+    {
+        return currencyConversionSavedSearchRepository.findAll()
+                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
     }
 
 }
