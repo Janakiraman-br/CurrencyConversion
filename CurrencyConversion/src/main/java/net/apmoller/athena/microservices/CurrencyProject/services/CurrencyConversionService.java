@@ -26,11 +26,10 @@ public class CurrencyConversionService
     private CurrencyConversionSavedSearchRepository currencyConversionSavedSearchRepository;
     private CurrencyConversion currencyConversion;
 
-    //GET ALL CURRENCY CONVERSION DATA
+    //GET ALL CURRENCY CONVERSION DATAS
     public Flux<CurrencyConversionDto> getAllCurrencyDatas()
     {
         return currencyConversionRepository.findAll()
-                .filter(a->a.isStatus())
                 .map(AppUtils::currencyConversionEntityToDto);
     }
 
@@ -75,7 +74,6 @@ public class CurrencyConversionService
     {
         return currencyConversionRepository
                 .findByConversionNameIgnoreCase(conversion_name)
-                .filter(a->a.isStatus())
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Name Not Found"))));
     }
@@ -84,7 +82,6 @@ public class CurrencyConversionService
     {
         return currencyConversionRepository
                 .findByConversionFactorIgnoreCase(conversionFactor)
-                .filter(a->a.isStatus())
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Factor Not Found"))));
     }
@@ -100,13 +97,13 @@ public class CurrencyConversionService
     {
         return currencyConversionRepository
                 .findByCreatedByIgnoreCase(createdBy)
-                .filter(a->a.isStatus())
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Creator Name Not Found"))));
     }
 
     public Mono<Map<String, Integer>> getCodeAndFactor()
     {
+        System.out.println("Incoming");
         Mono<Map<String, Integer>> collect = currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
                 .collect(Collectors.toMap(a -> a.getConversionName(), a -> a.getConversionFactor()));
         System.out.println(collect);
@@ -114,18 +111,16 @@ public class CurrencyConversionService
 
     }
 
-    public ResponseEntity addSearchedCurrencyName(Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    public Mono<CurrencyConversionSavedSearchDto> addSearchedCurrencyName(Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
     {
-        return new ResponseEntity(currencyConversionSavedSearchDtoMono
-                .map(AppUtils::currencyConversionSavedSearchDtoToEntity)
-                .flatMap(currencyConversionSavedSearchRepository::insert), HttpStatus.ACCEPTED);
+        return currencyConversionSavedSearchDtoMono.map(AppUtils::currencyConversionSavedSearchDtoToEntity).flatMap(currencyConversionSavedSearchRepository::insert)
+                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
     }
 
     public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(String name)
     {
         return currencyConversionSavedSearchRepository
                 .findById(name)
-                .filter(a->a.isStatus())
                 .map(AppUtils::currencyConversionSavedSearchEntityToDto);
     }
 
@@ -134,9 +129,13 @@ public class CurrencyConversionService
     {
         return currencyConversionSavedSearchRepository.findAll()
                 .map(AppUtils::currencyConversionSavedSearchEntityToDto)
-                .filter(a->a.isStatus())
                 .map(e->e.getConversionKey())
                 .collect(Collectors.toList());
+    }
+    public Flux<CurrencyConversionSavedSearchDto> getAllSavedSearchDatas()
+    {
+        return currencyConversionSavedSearchRepository.findAll()
+                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
     }
 
 }

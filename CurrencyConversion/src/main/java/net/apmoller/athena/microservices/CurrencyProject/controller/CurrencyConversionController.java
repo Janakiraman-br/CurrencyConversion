@@ -38,7 +38,7 @@ public class CurrencyConversionController
 
     //GET CURRENCY CONVERSION DATA BY ID
     @GetMapping("conversionkey/{key}")
-    public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key) throws CurrencyConversionException
+    public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key)
     {
         return currencyConversionService.getCurrencyDataByCode(key);
     }
@@ -80,7 +80,8 @@ public class CurrencyConversionController
     }
 
     @PostMapping("/savedsearch")
-    public ResponseEntity addSearchedCurrency(@RequestBody Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    public Mono<CurrencyConversionSavedSearchDto> addSearchedCurrency(@RequestBody Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+
     {
         return currencyConversionService.addSearchedCurrencyName(currencyConversionSavedSearchDtoMono);
     }
@@ -95,5 +96,11 @@ public class CurrencyConversionController
     public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(@PathVariable String name)
     {
         return currencyConversionService.getCurrencyConversionByName(name);
+    }
+
+    @GetMapping("/savedsearch")
+    public Flux<CurrencyConversionSavedSearchDto> getAllSavedSearchDatas()
+    {
+        return currencyConversionService.getAllSavedSearchDatas();
     }
 }
