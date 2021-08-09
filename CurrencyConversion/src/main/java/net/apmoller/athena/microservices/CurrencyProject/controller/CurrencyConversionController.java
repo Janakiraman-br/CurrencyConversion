@@ -51,24 +51,24 @@ public class CurrencyConversionController
     }
     //GET DATA BY SPECIFIC DATA
    @GetMapping("name/{name}")
-   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name) throws CurrencyConversionException
+   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name)
    {
        return currencyConversionService.getCurrencyDataByName(name);
    }
 
     @GetMapping("factor/{conversionFactor}")
-    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor)
     {
         return currencyConversionService.getCurrencyDataByConversionFactor(conversionFactor);
     }
     @GetMapping("status/{status}")
-    public Flux<CurrencyConversionDto> getByStatus(@PathVariable boolean status) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getByStatus(@PathVariable boolean status)
     {
         return currencyConversionService.getCurrencyDataByStatus(status);
     }
 
     @GetMapping("createdby/{createdBy}")
-    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy) throws CurrencyConversionException
+    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy)
     {
         return currencyConversionService.getCurrencyDataByCreatedBy(createdBy);
     }
