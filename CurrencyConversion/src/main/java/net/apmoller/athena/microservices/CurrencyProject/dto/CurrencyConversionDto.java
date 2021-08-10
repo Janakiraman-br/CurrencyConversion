@@ -21,6 +21,7 @@ public class CurrencyConversionDto
     private boolean status;
     private String createdBy;
     private String createdDate;
+    private boolean saved;
 
 
 }

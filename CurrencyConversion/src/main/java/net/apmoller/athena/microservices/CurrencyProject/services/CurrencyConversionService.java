@@ -8,8 +8,6 @@ import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConv
 import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionSavedSearchRepository;
 import net.apmoller.athena.microservices.CurrencyProject.util.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -111,31 +109,38 @@ public class CurrencyConversionService
 
     }
 
-    public Mono<CurrencyConversionSavedSearchDto> addSearchedCurrencyName(Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
+    public Flux<CurrencyConversionDto> getCurrencyConversionByName(String name)
     {
-        return currencyConversionSavedSearchDtoMono.map(AppUtils::currencyConversionSavedSearchDtoToEntity).flatMap(currencyConversionSavedSearchRepository::insert)
-                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
-    }
-
-    public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(String name)
-    {
-        return currencyConversionSavedSearchRepository
-                .findById(name)
-                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
+        return currencyConversionRepository
+                .findByconversionName(name)
+                .filter(a->a.isSaved())
+                .map(AppUtils::currencyConversionEntityToDto);
     }
 
 
-    public Mono<List<String>> getAllConversionKeySavedSearch(String conversionfactor)
+    // For DropDown
+    public Mono<List<String>> getAllConversionNameSavedSearch()
     {
-        return currencyConversionSavedSearchRepository.findAll()
-                .map(AppUtils::currencyConversionSavedSearchEntityToDto)
-                .map(e->e.getConversionKey())
+        return currencyConversionRepository
+                .findAll()
+                .filter(a->a.isSaved())
+                .map(AppUtils::currencyConversionEntityToDto)
+                .map(e->e.getConversionName())
+                .distinct()
                 .collect(Collectors.toList());
-    }
-    public Flux<CurrencyConversionSavedSearchDto> getAllSavedSearchDatas()
-    {
-        return currencyConversionSavedSearchRepository.findAll()
-                .map(AppUtils::currencyConversionSavedSearchEntityToDto);
+
+
+//                .findBysaved(true)
+//                .map(AppUtils::currencyConversionSavedSearchEntityToDto)
+//                .map(e->e.getConversionKey())
+//                .collect(Collectors.toList());
     }
 
+
+    public Mono<CurrencyConversionDto> updateSaved(Mono<CurrencyConversionDto> data)
+    {
+        return data.map(AppUtils::currencyConversionDtoToEntity)
+                .flatMap(currencyConversionRepository::save)
+                .map(AppUtils::currencyConversionEntityToDto);
+    }
 }

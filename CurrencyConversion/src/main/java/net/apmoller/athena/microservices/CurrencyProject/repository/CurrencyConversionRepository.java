@@ -18,4 +18,8 @@ public interface CurrencyConversionRepository extends ReactiveMongoRepository<Cu
 
 
     Flux<CurrencyConversion> findByConversionFactor(int conversionFactor);
+
+    Flux<CurrencyConversion> findBysaved(boolean b);
+
+    Flux<CurrencyConversion> findByconversionName(String conversionname);
 }

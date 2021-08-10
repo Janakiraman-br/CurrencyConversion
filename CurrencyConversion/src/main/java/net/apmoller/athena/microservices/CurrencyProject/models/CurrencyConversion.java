@@ -22,6 +22,7 @@ public class CurrencyConversion
     private boolean status;
     private String createdBy;
     private String createdDate;
+    private boolean saved;
 
 
 }

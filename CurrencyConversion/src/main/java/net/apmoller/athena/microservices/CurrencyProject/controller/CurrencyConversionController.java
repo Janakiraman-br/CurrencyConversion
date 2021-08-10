@@ -3,10 +3,9 @@ package net.apmoller.athena.microservices.CurrencyProject.controller;
 
 import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionDto;
 import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionSavedSearchDto;
-import net.apmoller.athena.microservices.CurrencyProject.exception.*;
+import net.apmoller.athena.microservices.CurrencyProject.models.CurrencyConversion;
 import net.apmoller.athena.microservices.CurrencyProject.services.CurrencyConversionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -79,28 +78,24 @@ public class CurrencyConversionController
         return currencyConversionService.getCodeAndFactor();
     }
 
-    @PostMapping("/savedsearch")
-    public Mono<CurrencyConversionSavedSearchDto> addSearchedCurrency(@RequestBody Mono<CurrencyConversionSavedSearchDto> currencyConversionSavedSearchDtoMono)
-
+    @PutMapping("/savedsearch/update")
+    public Mono<CurrencyConversionDto> updateSaved(@RequestBody Mono<CurrencyConversionDto> data)
     {
-        return currencyConversionService.addSearchedCurrencyName(currencyConversionSavedSearchDtoMono);
+        return currencyConversionService.updateSaved(data);
     }
 
-    @GetMapping("/savedsearch/conversionkey")
-    public Mono<List<String>> getAllConversionFactorSavedSearch(@PathVariable String conversionfactor)
+    //for drop down
+    @GetMapping("/savedsearch/conversionname")
+    public Mono<List<String>> getAllConversionNameSavedSearch()
     {
-        return currencyConversionService.getAllConversionKeySavedSearch(conversionfactor);
+        return currencyConversionService.getAllConversionNameSavedSearch();
     }
 
     @GetMapping("/savedsearch/{name}")
-    public Mono<CurrencyConversionSavedSearchDto> getCurrencyConversionByName(@PathVariable String name)
+    public Flux<CurrencyConversionDto> getCurrencyConversionByName(@PathVariable String name)
     {
         return currencyConversionService.getCurrencyConversionByName(name);
     }
 
-    @GetMapping("/savedsearch")
-    public Flux<CurrencyConversionSavedSearchDto> getAllSavedSearchDatas()
-    {
-        return currencyConversionService.getAllSavedSearchDatas();
-    }
+
 }
