@@ -143,4 +143,40 @@ public class CurrencyConversionService
                 .flatMap(currencyConversionRepository::save)
                 .map(AppUtils::currencyConversionEntityToDto);
     }
+
+    public Flux<CurrencyConversionDto> getnew(String ckey, String cname)
+    {
+        return currencyConversionRepository.findByconversionKeyAndconversionName(ckey,cname);
+    }
+
+    public Flux<CurrencyConversionDto> getnew1(String ckey, String cname,String ccreatedby)
+    {
+        return currencyConversionRepository.findByconversionKeyAndconversionNameAndcreatedBy(ckey,cname,ccreatedby);
+    }
+
+    public Flux<CurrencyConversionDto> getnew2(String ckey, String cname,int cfactor)
+    {
+        return currencyConversionRepository.findByconversionKeyAndconversionNameAndconversionFactor(ckey,cname,cfactor);
+    }
+
+    public Flux<CurrencyConversionDto> getnew3(String ckey, String cname,int cfactor,String ccreatedby)
+    {
+        return currencyConversionRepository.findByconversionKeyAndconversionNameAndconversionFactorAndcreatedBy(ckey,cname,cfactor,ccreatedby);
+    }
+
+
+    public Flux<CurrencyConversionDto> getnew4(int cfactor, String ccreatedby)
+    {
+        return currencyConversionRepository.findByconversionFactorAndcreatedBy(cfactor,ccreatedby);
+    }
+
+    public Flux<CurrencyConversionDto> getnew5(String ckey, int cfactor)
+    {
+        return currencyConversionRepository.findByconversionKeyAndconversionFactor(ckey,cfactor);
+    }
+
+    public Flux<CurrencyConversionDto> getnew6(String ckey, String ccreatedby)
+    {
+        return currencyConversionRepository.findByconversionKeyAndcreatedBy(ckey,ccreatedby);
+    }
 }

@@ -35,14 +35,14 @@ public class CurrencyConversionController
         return currencyConversionService.saveCurrencyData(currencyConversionDtoMono);
     }
 
-    //GET CURRENCY CONVERSION DATA BY ID
+    //GET CURRENCY CONVERSION DATA BY CONVERSIONKEY
     @GetMapping("/conversionkey/{key}")
     public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key)
     {
         return currencyConversionService.getCurrencyDataByCode(key);
     }
 
-    //UPDATE CURRENCY CONVERSION DATA BY ID
+    //UPDATE CURRENCY CONVERSION DATA BY CONVERSIONKEY
     @PutMapping("/update/{key}")
     public Mono<CurrencyConversionDto> updateData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono, @PathVariable String key)
     {
@@ -97,5 +97,45 @@ public class CurrencyConversionController
         return currencyConversionService.getCurrencyConversionByName(name);
     }
 
+    @GetMapping("/new/{ckey}/{cname}")
+    public Flux<CurrencyConversionDto> getnew(@PathVariable String ckey, @PathVariable String cname)
+    {
+        return currencyConversionService.getnew(ckey, cname);
+    }
 
+    @GetMapping("/new/{ckey}/{cname}/{ccreatedby}")
+    public Flux<CurrencyConversionDto> getnew1(@PathVariable String ckey, @PathVariable String cname, @PathVariable String ccreatedby)
+    {
+        return currencyConversionService.getnew1(ckey, cname,ccreatedby);
+    }
+
+    @GetMapping("/new2/{ckey}/{cname}/{cfactor}")
+    public Flux<CurrencyConversionDto> getnew2(@PathVariable String ckey, @PathVariable String cname, @PathVariable int cfactor)
+    {
+        return currencyConversionService.getnew2(ckey, cname,cfactor);
+    }
+
+    @GetMapping("/new2/{ckey}/{cname}/{cfactor}/{ccreatedby}")
+    public Flux<CurrencyConversionDto> getnew3(@PathVariable String ckey, @PathVariable String cname, @PathVariable int cfactor, @PathVariable String ccreatedby)
+    {
+        return currencyConversionService.getnew3(ckey, cname,cfactor,ccreatedby);
+    }
+
+    @GetMapping("/new4/{cfactor}/{ccreatedby}")
+    public Flux<CurrencyConversionDto> getnew4(@PathVariable int cfactor, @PathVariable String ccreatedby)
+    {
+        return currencyConversionService.getnew4(cfactor, ccreatedby);
+    }
+
+    @GetMapping("/new5/{ckey}/{cfactor}")
+    public Flux<CurrencyConversionDto> getnew5(@PathVariable String ckey, @PathVariable int cfactor)
+    {
+        return currencyConversionService.getnew5(ckey,cfactor);
+    }
+
+    @GetMapping("/new6/{ckey}/{ccreatedby}")
+    public Flux<CurrencyConversionDto> getnew6(@PathVariable String ckey, @PathVariable String ccreatedby)
+    {
+        return currencyConversionService.getnew6(ckey, ccreatedby);
+    }
 }
