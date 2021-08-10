@@ -37,7 +37,7 @@ public class CurrencyConversionController
     }
 
     //GET CURRENCY CONVERSION DATA BY ID
-    @GetMapping("conversionkey/{key}")
+    @GetMapping("/conversionkey/{key}")
     public Mono<CurrencyConversionDto> getByConversionKey(@PathVariable String key)
     {
         return currencyConversionService.getCurrencyDataByCode(key);

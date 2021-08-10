@@ -81,7 +81,7 @@ public class CurrencyConversionService
     public Flux<CurrencyConversionDto> getCurrencyDataByConversionFactor(int conversionFactor)
     {
         return currencyConversionRepository
-                .findByConversionFactorIgnoreCase(conversionFactor)
+                .findByConversionFactor(conversionFactor)
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Conversion Factor Not Found"))));
     }
