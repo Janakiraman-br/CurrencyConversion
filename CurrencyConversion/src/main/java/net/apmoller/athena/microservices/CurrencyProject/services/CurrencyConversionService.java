@@ -1,12 +1,9 @@
 package net.apmoller.athena.microservices.CurrencyProject.services;
 
 import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionDto;
-import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionSavedSearchDto;
 import net.apmoller.athena.microservices.CurrencyProject.exception.*;
-import net.apmoller.athena.microservices.CurrencyProject.models.CurrencyConversion;
 import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionCustomRepo;
 import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionRepository;
-import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionSavedSearchRepository;
 import net.apmoller.athena.microservices.CurrencyProject.util.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +19,11 @@ public class CurrencyConversionService
 {
     @Autowired
     private CurrencyConversionRepository currencyConversionRepository;
-    private CurrencyConversionSavedSearchRepository currencyConversionSavedSearchRepository;
+
     @Autowired
     private CurrencyConversionCustomRepo customRepo;
-    private CurrencyConversion currencyConversion;
+
+    //private CurrencyConversion currencyConversion;
 
     //GET ALL CURRENCY CONVERSION DATAS
     public Flux<CurrencyConversionDto> getAllCurrencyDatas()
@@ -90,10 +88,10 @@ public class CurrencyConversionService
     }
 
     //GET CURRENCY CONVERSION DATA BY STATUS
-    public Flux<CurrencyConversionDto> getCurrencyDataByStatus(boolean status)
+    public Flux<CurrencyConversionDto> getCurrencyDataByStatus()
     {
         return currencyConversionRepository
-                .findByStatus(status)
+                .findByStatus(true)
                 .map(AppUtils::currencyConversionEntityToDto)
                 .switchIfEmpty(Mono.defer(()->Mono.error(new CurrencyConversionException("Invalid Status Input is Provided"))));
     }
@@ -108,7 +106,7 @@ public class CurrencyConversionService
     }
 
     //GET CURRENCY CODE AND CONVERSION NAME
-    public Mono<Map<String, Integer>> getCodeAndFactor()
+    public Mono<Map<String, Integer>> getNameAndFactor()
     {
         System.out.println("Incoming");
         Mono<Map<String, Integer>> collect = currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
@@ -127,6 +125,12 @@ public class CurrencyConversionService
                 .map(AppUtils::currencyConversionEntityToDto);
     }
 
+    //INSERT SAVED SEARCH
+    public Mono<CurrencyConversionDto> addsearchedcurrency(Mono<CurrencyConversionDto> currencyConversionDtoMono)
+    {
+        return currencyConversionDtoMono.map(AppUtils::currencyConversionDtoToEntity).flatMap(currencyConversionRepository::insert).map(AppUtils::currencyConversionEntityToDto);
+    }
+
     //FOR DROP DOWN
     public Mono<List<String>> getAllConversionNameSavedSearch()
     {
@@ -137,12 +141,6 @@ public class CurrencyConversionService
                 .map(e->e.getConversionName())
                 .distinct()
                 .collect(Collectors.toList());
-
-
-//                .findBysaved(true)
-//                .map(AppUtils::currencyConversionSavedSearchEntityToDto)
-//                .map(e->e.getConversionKey())
-//                .collect(Collectors.toList());
     }
 
     // UPDATE FOR SAVED SEARCH
@@ -153,49 +151,7 @@ public class CurrencyConversionService
                 .map(AppUtils::currencyConversionEntityToDto);
     }
 
-    //SEARCH BY CONVERSION KEY AND CONVERSION NAME
-    public Flux<CurrencyConversionDto> getnew(String ckey, String cname)
-    {
-        return currencyConversionRepository.findByconversionKeyAndconversionName(ckey,cname);
-    }
-
-    //SEARCH BY CONVERSION KEY AND CONVERSION NAME AND CREATED BY
-    public Flux<CurrencyConversionDto> getnew1(String ckey, String cname,String ccreatedby)
-    {
-        return currencyConversionRepository.findByconversionKeyAndconversionNameAndcreatedBy(ckey,cname,ccreatedby);
-    }
-
-    //SEARCH BY CONVERSION KEY AND CONVERSION NAME AND CONVERSION FACTOR
-    public Flux<CurrencyConversionDto> getnew2(String ckey, String cname,int cfactor)
-    {
-        return currencyConversionRepository.findByconversionKeyAndconversionNameAndconversionFactor(ckey,cname,cfactor);
-    }
-
-    //SEARCH BY CONVERSION KEY AND CONVERSION NAME AND CONVERSION FACTOR AND CREATED BY
-    public Flux<CurrencyConversionDto> getnew3(String ckey, String cname,int cfactor,String ccreatedby)
-    {
-        return currencyConversionRepository.findByconversionKeyAndconversionNameAndconversionFactorAndcreatedBy(ckey,cname,cfactor,ccreatedby);
-    }
-
-    //SEARCH BY CONVERSION FACTOR AND CREATED BY
-    public Flux<CurrencyConversionDto> getnew4(int cfactor, String ccreatedby)
-    {
-        return currencyConversionRepository.findByconversionFactorAndcreatedBy(cfactor,ccreatedby);
-    }
-
-    //SEARCH BY CONVERSION KEY AND CONVERSION FACTOR
-    public Flux<CurrencyConversionDto> getnew5(String ckey, int cfactor)
-    {
-        return currencyConversionRepository.findByconversionKeyAndconversionFactor(ckey,cfactor);
-    }
-
-    //SEARCH BY CONVERSION KEY AND CREATED BY
-    public Flux<CurrencyConversionDto> getnew6(String ckey, String ccreatedby)
-    {
-        return currencyConversionRepository.findByconversionKeyAndcreatedBy(ckey,ccreatedby);
-    }
-
-
+    //DYNAMIC SEARCH
     public Flux<CurrencyConversionDto> getByProp(String conversionKey, String conversionName, Integer conversionFactor, boolean status, String createdBy, String createdDate)
     {
         return customRepo

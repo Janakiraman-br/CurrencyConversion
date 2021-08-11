@@ -1,8 +1,5 @@
 package net.apmoller.athena.microservices.CurrencyProject.models;
 
-import java.util.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
