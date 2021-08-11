@@ -153,4 +153,16 @@ public class CurrencyConversionController
     {
         return currencyConversionService.getnew6(ckey, ccreatedby);
     }
+
+
+    @GetMapping("/customrepo")
+    public Flux<CurrencyConversionDto> getCurrencyByProperties(@RequestParam(required = false) String conversionKey,
+                                                     @RequestParam(required = false) String conversionName,
+                                                     @RequestParam(required = false) Integer conversionFactor,
+                                                     @RequestParam(required = false) boolean status,
+                                                     @RequestParam(required = false) String createdBy,
+                                                     @RequestParam(required = false) String createdDate)
+    {
+        return currencyConversionService.getByProp(conversionKey,conversionName,conversionFactor,status,createdBy,createdDate);
+    }
 }

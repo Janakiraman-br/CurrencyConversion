@@ -4,6 +4,7 @@ import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionD
 import net.apmoller.athena.microservices.CurrencyProject.dto.CurrencyConversionSavedSearchDto;
 import net.apmoller.athena.microservices.CurrencyProject.exception.*;
 import net.apmoller.athena.microservices.CurrencyProject.models.CurrencyConversion;
+import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionCustomRepo;
 import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionRepository;
 import net.apmoller.athena.microservices.CurrencyProject.repository.CurrencyConversionSavedSearchRepository;
 import net.apmoller.athena.microservices.CurrencyProject.util.AppUtils;
@@ -22,6 +23,8 @@ public class CurrencyConversionService
     @Autowired
     private CurrencyConversionRepository currencyConversionRepository;
     private CurrencyConversionSavedSearchRepository currencyConversionSavedSearchRepository;
+    @Autowired
+    private CurrencyConversionCustomRepo customRepo;
     private CurrencyConversion currencyConversion;
 
     //GET ALL CURRENCY CONVERSION DATAS
@@ -190,5 +193,14 @@ public class CurrencyConversionService
     public Flux<CurrencyConversionDto> getnew6(String ckey, String ccreatedby)
     {
         return currencyConversionRepository.findByconversionKeyAndcreatedBy(ckey,ccreatedby);
+    }
+
+
+    public Flux<CurrencyConversionDto> getByProp(String conversionKey, String conversionName, Integer conversionFactor, boolean status, String createdBy, String createdDate)
+    {
+        return customRepo
+                .findCurrencyProperties(conversionKey,conversionName,conversionFactor,status,createdBy,createdDate)
+                .filter(a->a.isStatus())
+                .map(AppUtils::currencyConversionEntityToDto);
     }
 }
