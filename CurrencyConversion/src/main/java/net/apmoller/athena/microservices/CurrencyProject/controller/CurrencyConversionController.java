@@ -89,7 +89,7 @@ public class CurrencyConversionController
         return currencyConversionService.getAllConversionNameSavedSearch();
     }
 
-    @PostMapping("/savedsearch")
+    @PutMapping("/savedsearch")
     public Mono<CurrencyConversionDto> saveSearchedData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono)
     {
         return currencyConversionService.addsearchedcurrency(currencyConversionDtoMono);

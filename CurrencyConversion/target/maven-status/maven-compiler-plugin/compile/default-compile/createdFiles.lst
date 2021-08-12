@@ -2,7 +2,6 @@ net\apmoller\athena\microservices\CurrencyProject\exception\CurrencyConversionEx
 net\apmoller\athena\microservices\CurrencyProject\controller\CurrencyConversionController.class
 net\apmoller\athena\microservices\CurrencyProject\models\CurrencyConversionSavedSearch.class
 net\apmoller\athena\microservices\CurrencyProject\CurrencyProjectApplication.class
-net\apmoller\athena\microservices\CurrencyProject\swaggerConfig\SwaggerConfiguration.class
 net\apmoller\athena\microservices\CurrencyProject\models\CurrencyConversionError.class
 net\apmoller\athena\microservices\CurrencyProject\dto\CurrencyConversionDto.class
 net\apmoller\athena\microservices\CurrencyProject\services\CurrencyConversionService.class
