@@ -29,11 +29,8 @@ public class CurrencyConversionCustomRepoImpl implements CurrencyConversionCusto
         if (conversionName != null && !conversionName.isEmpty())
             criteria.add(Criteria.where("conversionName").is(conversionName));
 
-     if (conversionFactor != null )
-          criteria.add(Criteria.where("conversionFactor").is(conversionFactor));
-
-       // if (status ==true || status==false)
-            //criteria.add(Criteria.where("status").is(status));
+        if (conversionFactor != null && conversionFactor != 0 )
+            criteria.add(Criteria.where("conversionFactor").is(conversionFactor));
 
         if (createdBy != null && !createdBy.isEmpty())
             criteria.add(Criteria.where("createdBy").is(createdBy));

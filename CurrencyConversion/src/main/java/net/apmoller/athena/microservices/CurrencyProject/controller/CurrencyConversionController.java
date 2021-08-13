@@ -19,18 +19,32 @@ public class CurrencyConversionController
     @Autowired
     private CurrencyConversionService currencyConversionService;
 
-    //GET ALL CURRENCY CONVERSION DATAS
-    @GetMapping
-    public Flux<CurrencyConversionDto> getAllDatas()
-    {
-        return currencyConversionService.getAllCurrencyDatas();
-    }
-
     //INSERT CURRENCY CONVERSION DATA
     @PostMapping
     public Mono<CurrencyConversionDto> saveData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono)
     {
         return currencyConversionService.saveCurrencyData(currencyConversionDtoMono);
+    }
+
+    //INSERT SAVED SEARCH
+    @PutMapping("/savedsearch")
+    public Mono<CurrencyConversionDto> saveSearchedData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono)
+    {
+        return currencyConversionService.addsearchedcurrency(currencyConversionDtoMono);
+    }
+
+    //UPDATE CURRENCY CONVERSION DATA BY CONVERSIONKEY [CHANGING THE STATUS TO FALSE AND INSERTING NEW DATA]
+    @PutMapping("/update/{key}")
+    public Mono<CurrencyConversionDto> updateData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono, @PathVariable String key)
+    {
+        return currencyConversionService.updateCurrencyData(currencyConversionDtoMono,key);
+    }
+
+    //GET ALL CURRENCY CONVERSION DATAS
+    @GetMapping
+    public Flux<CurrencyConversionDto> getAllDatas()
+    {
+        return currencyConversionService.getAllCurrencyDatas();
     }
 
     //GET CURRENCY CONVERSION DATA BY CONVERSIONKEY
@@ -40,25 +54,25 @@ public class CurrencyConversionController
         return currencyConversionService.getCurrencyDataByCode(key);
     }
 
-    //UPDATE CURRENCY CONVERSION DATA BY CONVERSIONKEY [CHANGING THE STATUS TO FALSE AND INSERTING NEW DATA]
-     @PutMapping("/update/{key}")
-    public Mono<CurrencyConversionDto> updateData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono, @PathVariable String key)
-    {
-        return currencyConversionService.updateCurrencyData(currencyConversionDtoMono,key);
-    }
-
     //GET CURRENCY CONVERSION DATA BY CONVERSION NAME
     @GetMapping("/name/{name}")
-   public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name)
-   {
-       return currencyConversionService.getCurrencyDataByName(name);
-   }
+    public Flux<CurrencyConversionDto> getByConversionName(@PathVariable String name)
+    {
+        return currencyConversionService.getCurrencyDataByName(name);
+    }
 
     //GET CURRENCY CONVERSION DATA BY CONVERSION FACTOR
      @GetMapping("/factor/{conversionFactor}")
-    public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor)
-    {
+     public Flux<CurrencyConversionDto> getByConversionFactor(@PathVariable int conversionFactor)
+     {
         return currencyConversionService.getCurrencyDataByConversionFactor(conversionFactor);
+     }
+
+    //GET CURRENCY CONVERSION DATA BY CREATED BY
+    @GetMapping("/createdby/{createdBy}")
+    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy)
+    {
+        return currencyConversionService.getCurrencyDataByCreatedBy(createdBy);
     }
 
     //GET CURRENCY CONVERSION DATA BY STATUS
@@ -66,13 +80,6 @@ public class CurrencyConversionController
     public Flux<CurrencyConversionDto> getByStatus()
     {
         return currencyConversionService.getCurrencyDataByStatus();
-    }
-
-    //GET CURRENCY CONVERSION DATA BY CREATED BY
-    @GetMapping("/createdby/{createdBy}")
-    public Flux<CurrencyConversionDto> getByCreatedBy(@PathVariable String createdBy)
-    {
-        return currencyConversionService.getCurrencyDataByCreatedBy(createdBy);
     }
 
     //GET CURRENCY CODE AND CONVERSION NAME
@@ -87,12 +94,6 @@ public class CurrencyConversionController
     public Mono<List<String>> getAllConversionNameSavedSearch()
     {
         return currencyConversionService.getAllConversionNameSavedSearch();
-    }
-
-    @PutMapping("/savedsearch")
-    public Mono<CurrencyConversionDto> saveSearchedData(@RequestBody Mono<CurrencyConversionDto> currencyConversionDtoMono)
-    {
-        return currencyConversionService.addsearchedcurrency(currencyConversionDtoMono);
     }
 
     //GET SAVED SEARCH DATA BY CONVERSION NAME

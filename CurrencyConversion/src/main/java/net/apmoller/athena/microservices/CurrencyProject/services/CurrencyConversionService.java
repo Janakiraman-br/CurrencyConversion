@@ -110,10 +110,10 @@ public class CurrencyConversionService
     public Mono<Map<String, Integer>> getNameAndFactor()
     {
         System.out.println("Incoming");
-        Mono<Map<String, Integer>> collect = currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
+        return  currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
                 .collect(Collectors.toMap(a -> a.getConversionName(), a -> a.getConversionFactor()));
-        System.out.println(collect);
-        return collect;
+        //System.out.println(collect);
+
 
     }
 
@@ -147,14 +147,6 @@ public class CurrencyConversionService
                 .map(e->e.getConversionName())
                 .distinct()
                 .collect(Collectors.toList());
-    }
-
-    // UPDATE FOR SAVED SEARCH
-    public Mono<CurrencyConversionDto> updateSaved(Mono<CurrencyConversionDto> data)
-    {
-        return data.map(AppUtils::currencyConversionDtoToEntity)
-                .flatMap(currencyConversionRepository::save)
-                .map(AppUtils::currencyConversionEntityToDto);
     }
 
     //DYNAMIC SEARCH
