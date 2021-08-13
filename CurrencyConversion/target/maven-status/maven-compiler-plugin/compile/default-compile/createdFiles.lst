@@ -1,14 +1,11 @@
 net\apmoller\athena\microservices\CurrencyProject\exception\CurrencyConversionException.class
 net\apmoller\athena\microservices\CurrencyProject\controller\CurrencyConversionController.class
-net\apmoller\athena\microservices\CurrencyProject\models\CurrencyConversionSavedSearch.class
 net\apmoller\athena\microservices\CurrencyProject\CurrencyProjectApplication.class
 net\apmoller\athena\microservices\CurrencyProject\models\CurrencyConversionError.class
 net\apmoller\athena\microservices\CurrencyProject\dto\CurrencyConversionDto.class
 net\apmoller\athena\microservices\CurrencyProject\services\CurrencyConversionService.class
 net\apmoller\athena\microservices\CurrencyProject\repository\CurrencyConversionCustomRepo.class
 net\apmoller\athena\microservices\CurrencyProject\repository\CurrencyConversionCustomRepoImpl.class
-net\apmoller\athena\microservices\CurrencyProject\controller\ExceptionAdvice.class
-net\apmoller\athena\microservices\CurrencyProject\dto\CurrencyConversionSavedSearchDto.class
 net\apmoller\athena\microservices\CurrencyProject\models\CurrencyConversion.class
 net\apmoller\athena\microservices\CurrencyProject\util\AppUtils.class
 net\apmoller\athena\microservices\CurrencyProject\repository\CurrencyConversionRepository.class

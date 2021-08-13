@@ -122,18 +122,15 @@ public class CurrencyConversionService
     {
         return currencyConversionRepository
                 .findByconversionName(name)
-                .filter(a->a.isSaved())
                 .filter(a->a.isStatus())
+                .filter(a->a.isSaved())
                 .map(AppUtils::currencyConversionEntityToDto);
     }
 
     //INSERT SAVED SEARCH
     public Mono<CurrencyConversionDto> addsearchedcurrency(Mono<CurrencyConversionDto> currencyConversionDtoMono)
     {
-        return currencyConversionDtoMono
-                .map(AppUtils::currencyConversionDtoToEntity)
-                .flatMap(currencyConversionRepository::save)
-                .map(AppUtils::currencyConversionEntityToDto);
+        return currencyConversionDtoMono.map(AppUtils::currencyConversionDtoToEntity).flatMap(currencyConversionRepository::insert).map(AppUtils::currencyConversionEntityToDto);
     }
 
     //FOR DROP DOWN
@@ -142,7 +139,6 @@ public class CurrencyConversionService
         return currencyConversionRepository
                 .findAll()
                 .filter(a->a.isSaved())
-                .filter(a->a.isStatus())
                 .map(AppUtils::currencyConversionEntityToDto)
                 .map(e->e.getConversionName())
                 .distinct()

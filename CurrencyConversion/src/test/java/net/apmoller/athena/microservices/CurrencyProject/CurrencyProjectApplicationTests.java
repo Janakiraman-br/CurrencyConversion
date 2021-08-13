@@ -121,52 +121,50 @@ class CurrencyProjectApplicationTests {
 				.verifyComplete();
 	}
 
-	@Test
-    public void dynamicTest(){
-        Flux<CurrencyConversionDto> productDtoFlux=Flux.just(new CurrencyConversionDto("USD", "ads", 1, true, "JKR","12-08-2021",true));
-
-        //when(service.getByProp("USD","ads",6,true,null,null)).thenReturn(productDtoFlux);
-
-        Flux<CurrencyConversionDto> responseBody = webTestClient.get().uri("/currencyconversion/customrepo?conversionName=ads")
-                .exchange()
-                .expectStatus().isOk()
-                .returnResult(CurrencyConversionDto.class)
-                .getResponseBody();
-
-        StepVerifier.create(responseBody)
-                .expectSubscription()
-                //.expectNext(new CurrencyConversionDto( "USD", "ads", 1, true, "JKR","12-08-2021",true))
-                .expectNextMatches(p->p.getConversionName().equals("ads"))
-                .verifyComplete();
-
-    }
-
 //	@Test
-//	public void addSavedProductTest() {
-//		Mono<CurrencyConversionSavedSearchDto> productDtoMono = Mono.just(new CurrencyConversionSavedSearchDto( "USD", "ads", 1, true, "JKR","12-08-2021",true));
-//		when(service.addSearchedCurrencyName(productDtoMono)).thenReturn(productDtoMono);
+//    public void dynamicTest(){
+//        Flux<CurrencyConversionDto> productDtoFlux=Flux.just(new CurrencyConversionDto("USD", "ads", 1, true, "JKR","12-08-2021",true));
 //
-//		webTestClient.post().uri("/currencyconversion/savedsearch")
-//				.body(Mono.just(productDtoMono), CurrencyConversionDto.class)
-//				.exchange()
-//				.expectStatus().isOk();//200
-//	}
+//        //when(service.getByProp("USD","ads",6,true,null,null)).thenReturn(productDtoFlux);
+//
+//        Flux<CurrencyConversionDto> responseBody = webTestClient.get().uri("/currencyconversion/customrepo?conversionName=ads")
+//                .exchange()
+//                .expectStatus().isOk()
+//                .returnResult(CurrencyConversionDto.class)
+//                .getResponseBody();
+//
+//        StepVerifier.create(responseBody)
+//                .expectSubscription()
+//                //.expectNext(new CurrencyConversionDto( "USD", "ads", 1, true, "JKR","12-08-2021",true))
+//                .expectNextMatches(p->p.getConversionName().equals("ads"))
+//                .verifyComplete();
+//
+//    }
+
+	@Test
+	public void addSavedProductTest() {
+		Mono<CurrencyConversionDto> productDtoMono = Mono.just(new CurrencyConversionDto( "USD", "ads", 1, true, "JKR","12-08-2021",true));
+		when(service.addsearchedcurrency(productDtoMono)).thenReturn(productDtoMono);
+
+		webTestClient.put().uri("/currencyconversion/savedsearch")
+				.body(Mono.just(productDtoMono), CurrencyConversionDto.class)
+				.exchange()
+				.expectStatus().isOk();//200
+	}
 //	@Test
 //	public void getSavedSearchTest(){
-//		Flux<CurrencyConversionSavedSearchDto> productDtoFlux=Flux.just(new CurrencyConversionSavedSearchDto("USD", "ads", 1, true, "JKR","12-08-2021",true));
+//		Flux<CurrencyConversionDto> productDtoFlux=Flux.just(new CurrencyConversionDto("USD", "ads", 1, true, "JKR","12-08-2021",true));
+//		when(service.getCurrencyConversionByName("asd")).thenReturn(productDtoFlux);
 //
-//		when(service.getAllSavedSearchDatas()).thenReturn(productDtoFlux);
-//
-//		Flux<CurrencyConversionSavedSearchDto> responseBody = webTestClient.get().uri("/currencyconversion/savedsearch")
+//		Flux<CurrencyConversionDto> responseBody = webTestClient.get().uri("/currencyconversion/savedsearch")
 //				.exchange()
 //				.expectStatus().isOk()
-//				.returnResult(CurrencyConversionSavedSearchDto.class)
+//				.returnResult(CurrencyConversionDto.class)
 //				.getResponseBody();
 //
 //		StepVerifier.create(responseBody)
 //				.expectSubscription()
-//				.expectNext(new CurrencyConversionSavedSearchDto( "USD", "ads", 1, true, "JKR","12-08-2021",true))
-//
+//				.expectNextMatches(p->p.getConversionName().equals("ads"))
 //				.verifyComplete();
 //
 //	}
