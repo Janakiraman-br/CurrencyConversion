@@ -107,15 +107,31 @@ public class CurrencyConversionService
     }
 
     //GET CURRENCY CODE AND CONVERSION NAME
-    public Mono<Map<String, Integer>> getNameAndFactor()
+//    public Mono<Map<String, Integer>> getNameAndFactor()
+//    {
+//        System.out.println("Incoming");
+//        return  currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
+//                .collect(Collectors.toMap(a -> a.getConversionName(), a -> a.getConversionFactor()));
+//        //System.out.println(collect);
+//
+//
+//    }
+    public Mono<List<String>> getName()
     {
-        System.out.println("Incoming");
-        return  currencyConversionRepository.findByStatus(true).map(AppUtils::currencyConversionEntityToDto)
-                .collect(Collectors.toMap(a -> a.getConversionName(), a -> a.getConversionFactor()));
-        //System.out.println(collect);
-
-
+        return  currencyConversionRepository.findByStatus(true)
+                .map(AppUtils::currencyConversionEntityToDto)
+                .map(a->a.getConversionName())
+                .collect(Collectors.toList());
     }
+    public Mono<List<Integer>> getFactor(String conversionName)
+    {
+        return currencyConversionRepository.findByconversionName(conversionName)
+                .filter(a->a.isStatus())
+                .map(AppUtils::currencyConversionEntityToDto)
+                .map(a->a.getConversionFactor())
+                .collect(Collectors.toList());
+    }
+
 
     //GET SAVED SEARCH DATA BY CONVERSION NAME
     public Flux<CurrencyConversionDto> getCurrencyConversionByName(String name)

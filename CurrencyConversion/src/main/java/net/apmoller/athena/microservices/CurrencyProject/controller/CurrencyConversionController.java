@@ -83,12 +83,17 @@ public class CurrencyConversionController
     }
 
     //GET CURRENCY CODE AND CONVERSION NAME
-    @GetMapping("/getnameandfactor")
-    public Mono<Map<String, Integer >> getNameAndFactor()
+    @GetMapping("/getname")
+    public Mono<List<String>> getName()
     {
-        return currencyConversionService.getNameAndFactor();
+        return currencyConversionService.getName();
     }
-
+    //Get Conversion Factor
+    @GetMapping("/getfactor/{conversionName}")
+    public Mono<List<Integer>> getFactor(@PathVariable String conversionName)
+    {
+        return  currencyConversionService.getFactor(conversionName);
+    }
     //FOR DROP DOWN
     @GetMapping("/savedsearch/conversionname")
     public Mono<List<String>> getAllConversionNameSavedSearch()
