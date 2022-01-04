@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: net.apmoller.athena.microservices.CurrencyProject.CurrencyProjectApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.297 s - in net.apmoller.athena.microservices.CurrencyProject.CurrencyProjectApplicationTests
+Tests run: 7, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.779 s <<< FAILURE! - in net.apmoller.athena.microservices.CurrencyProject.CurrencyProjectApplicationTests
+getSavedSearchTest  Time elapsed: 0.056 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200 OK> but was:<405 METHOD_NOT_ALLOWED>
+	at net.apmoller.athena.microservices.CurrencyProject.CurrencyProjectApplicationTests.getSavedSearchTest(CurrencyProjectApplicationTests.java:146)
+

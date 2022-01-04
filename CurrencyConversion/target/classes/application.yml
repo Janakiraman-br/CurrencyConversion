@@ -1,8 +1,8 @@
-spring:
-  data:
-    mongodb:
-      database: Conversiondb
-      host: localhost
-      port: 27017
+#spring:
+#  data:
+#    mongodb:
+#      database: Conversiondb
+#      host: localhost
+#      port: 27017
 
 
